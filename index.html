@@ -57,6 +57,51 @@
               </b-button>
             </b-col>
           </b-row>
+                 </b-layout>
+      </b-card>
+      <b-card v-if="flour.allow" style="max-width:20rem;">
+        <template v-slot:header>
+
+          Backstube
+          <span class="float-right">Geld: {{money}}</span>
+        </template>
+        <b-layout fluid>
+          <b-row>
+            <b-col>
+              <div>{{flour.count}} {{"Mehl"}}</div>
+            </b-col>
+            <b-col cols="4">
+              <b-button @click="buyFlour" variant="primary" :disabled="score < flour.price">{{ flour.price }}
+              </b-button>
+            </b-col>
+          </b-row>
+          <b-row>
+            <b-col>
+              <div>{{sugar.count}} {{"Zucker"}}</div>
+            </b-col>
+            <b-col cols="4">
+              <b-button @click="buySugar" variant="primary" :disabled="score < sugar.price">{{ sugar.price }}
+              </b-button>
+            </b-col>
+          </b-row>
+          <b-row>
+            <b-col>
+              <div>{{butter.count}} {{"Butter"}}</div>
+            </b-col>
+            <b-col cols="4">
+              <b-button @click="buyButter" variant="primary" :disabled="score < butter.price">{{ butter.price }}
+              </b-button>
+            </b-col>
+          </b-row>
+          <b-row>
+            <b-col>
+              <div>{{sables.count}} {{"Sablés"}}</div>
+            </b-col>
+            <b-col cols="4">
+              <b-button @click="makeSables" variant="primary" :disabled="flour.count < sables.flour || sugar.count < sables.sugar || butter.count < sables.butter">{{ flour.price }}
+              </b-button>
+            </b-col>
+          </b-row>
         </b-layout>
       </b-card>
     </b-card-group>
@@ -73,6 +118,7 @@
       data: {
         message: 'Hello Vue!',
         score: 0n,
+        money: 0,
         increment: 0.00,
         buttonValue: 1,
         chicken: {
@@ -86,6 +132,26 @@
             stepsRequired: 1000,
             stepsDone: 0
           }
+        },
+        flour: {
+          count: 0,
+          price: 5,
+          allow: false,
+        },
+        sugar: {
+          count: 0,
+          price: 5,
+        },
+        butter: {
+          count: 0,
+          price: 10,
+        },
+        sables: {
+          count:0,
+          butter: 2,
+          sugar: 1,
+          flour: 3,
+        
         }
       },
       created: function () {
@@ -104,8 +170,11 @@
         },
         addManual: function () {
           this.score += BigInt(this.buttonValue)
-          if (this.score == BigInt(50)) {
+          if (this.money >= BigInt(50)) {
             this.chicken.allow = true
+          }
+          if (this.score == BigInt(5)){
+            this.flour.allow = true
           }
         },
         buyChicken: function () {
@@ -124,6 +193,24 @@
             this.chicken.production.stepsRequired = Math.floor(this.chicken.production.stepsRequired * 0.95)
             this.chicken.improvmentprice = Math.ceil(this.chicken.improvmentprice * 1.5)
           }
+        },
+        buyFlour: function () {
+          this.score -=BigInt(this.flour.price)
+          this.flour.count++
+        },
+        buySugar: function(){
+          this.score -=BigInt(this.sugar.price)
+          this.sugar.count++
+        },
+        buyButter: function(){
+          this.score -=BigInt(this.butter.price)
+          this.butter.count++
+        },
+        makeSables: function(){
+          this.money += 20
+          this.butter.count -=2
+          this.sugar.count -=1
+          this.flour.count -=3
         }
       }
     })
