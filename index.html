@@ -45,6 +45,7 @@
         <b-layout fluid>
           <b-row>
             <b-col>
+              <div>{{flour.count}} {{"Mehl "}}<img src="https://cdn2.iconfinder.com/data/icons/bakery-color/200/23-512.png" width="20"></div>
             </b-col>
             <b-col cols="5">
               <b-button @click="buyFlour" variant="primary" :disabled="score < flour.price">{{ flour.price }}
