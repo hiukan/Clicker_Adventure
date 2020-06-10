@@ -28,7 +28,7 @@
         <b-layout fluid>
           <b-row>
             <b-col>
-              {{ score }} {{ score === 1n ? "Ei" : "Eier"}}
+              {{ score }} {{ score === 1n ? "Ei" : "Eier"}}<img src="https://s12.directupload.net/images/200610/dzy5y4gv.png" height="15">
             </b-col>
             <b-col cols="4">
               <b-button @click="addManual" variant="primary">+ {{ buttonValue }}</b-button>
@@ -36,11 +36,110 @@
           </b-row>
         </b-layout>
       </b-card>
-      <b-card v-if="chicken.allow" style="max-width: 20rem;" header="Hühner">
+            <b-card v-if="flour.allow" style="max-width:25rem;">
+        <template v-slot:header>
+
+          Backstube
+          <span class="float-right">Geld: {{money}}</span><p></p><p><small>Tausche Eier gegen Zutaten und verkaufe die gebackenen Waren für Geld</small></p>
+        </template>
         <b-layout fluid>
           <b-row>
             <b-col>
-              <div>{{ chicken.count }} {{ chicken.count === 1 ? "Huhn" : "Hühner"}}</div>
+              <div>{{flour.count}} {{"Mehl "}}<img src="https://cdn2.iconfinder.com/data/icons/bakery-color/200/23-512.png" height="15"></div>
+            </b-col>
+            <b-col cols="5">
+              <b-button @click="buyFlour" variant="primary" :disabled="score < flour.price">{{ flour.price }}
+              </b-button>
+            </b-col>
+          </b-row>
+          <b-row>
+            <b-col>
+              <div>{{sugar.count}} {{"Zucker "}}<img src="https://s12.directupload.net/images/200609/57mqmihy.png" height="15"></div>
+            </b-col>
+            <b-col cols="5">
+              <b-button @click="buySugar" variant="primary" class="mt-2" :disabled="score < sugar.price">{{ sugar.price }}
+              </b-button>
+            </b-col>
+          </b-row>
+          <b-row>
+            <b-col>
+              <div>{{butter.count}} {{"Butter "}}<img src="https://cdn2.iconfinder.com/data/icons/food-drink-60/50/1F9C8-butter-512.png" height="15"></div>
+            </b-col>
+            <b-col cols="5">
+              <b-button @click="buyButter" variant="primary" class="mt-2" :disabled="score < butter.price">{{ butter.price }}
+              </b-button>
+            </b-col>
+          </b-row>
+          <b-row v-if="apfelstrudel.allow">
+            <b-col>
+              <div title="Apfelstrudel backen und verkaufen">{{"Apfelstrudel "}}<img src="https://comps.gograph.com/ggb/88115090" height="15"></div>
+            </b-col>
+            <b-col cols="5">
+              <b-button @click="makeApfelstrudel" variant="primary" class="mt-2" :disabled="flour.count < apfelstrudel.flour || apples.count < apfelstrudel.apples || butter.count < apfelstrudel.butter" title="2 Mehl, 2 Äpfel, 1 Butter">2<img src="https://cdn2.iconfinder.com/data/icons/bakery-color/200/23-512.png" height="15"> 2<img src="https://s12.directupload.net/images/200610/pndyh9ie.png" height="15"> 1<img src="https://cdn2.iconfinder.com/data/icons/food-drink-60/50/1F9C8-butter-512.png" height="15">
+              </b-button>
+            </b-col>
+          </b-row>
+          <b-row v-if="bread.allow">
+            <b-col>
+              <div title="Brot backen und verkaufen">{{"Brot "}}<img src="https://cdn0.iconfinder.com/data/icons/bakery-filled-color/300/91516644Untitled-3-512.png" height="15"></div>
+            </b-col>
+            <b-col cols="5">
+              <b-button @click="makeBread" variant="primary" class="mt-2" :disabled="flour.count < bread.flour" title="1 Mehl">1<img src="https://cdn2.iconfinder.com/data/icons/bakery-color/200/23-512.png" height="15">
+              </b-button>
+            </b-col>
+          </b-row>
+          <b-row v-if="eggsalad.allow">
+            <b-col>
+              <div title="Eiersalat zubereiten und verkaufen">{{"Eiersalat "}}<img src="https://s12.directupload.net/images/200610/jzni28n6.jpg" height="15"></div>
+            </b-col>
+            <b-col cols="5">
+              <b-button @click="makeEggsalad" variant="primary" class="mt-2" :disabled="score < eggsalad.price || butter.count < eggsalad.butter" title="10 Eier, 1 Butter">10<img src="https://s12.directupload.net/images/200610/dzy5y4gv.png" height="15"> 1<img src="https://cdn2.iconfinder.com/data/icons/food-drink-60/50/1F9C8-butter-512.png" height="15">
+              </b-button>
+            </b-col>
+          </b-row>
+          <b-row v-if="boiledEggs.allow">
+            <b-col>
+              <div title="Eier kochen und verkaufen">{{"gekochte Eier "}}<img src="https://s12.directupload.net/images/200610/wejd4z9l.png" height="15"></div>
+            </b-col>
+            <b-col cols="5">
+              <b-button @click="makeBoiledEggs" variant="primary" class="mt-2" :disabled="score < boiledEggs.price" title="5 Eier">5<img src="https://s12.directupload.net/images/200610/dzy5y4gv.png" height="15">
+              </b-button>
+            </b-col>
+          </b-row>
+          <b-row v-if="omelette.allow">
+            <b-col>
+              <div title="Omelettes zubereiten und verkaufen">{{"Omelettes "}}<img src="https://s12.directupload.net/images/200610/287g64s8.png" height="15"></div>
+            </b-col>
+            <b-col cols="5">
+              <b-button @click="makeOmelettes" variant="primary" class="mt-2" :disabled="score < omelette.price || milk.count < omelette.milk || butter.count < omelette.butter" title="8 Eier, 1 Milch, 1 Butter">8<img src="https://s12.directupload.net/images/200610/dzy5y4gv.png" height="15"> 1<img src="https://s12.directupload.net/images/200610/lil9sxqw.png" height="15"> 1<img src="https://cdn2.iconfinder.com/data/icons/food-drink-60/50/1F9C8-butter-512.png" height="15">
+              </b-button>
+            </b-col>
+          </b-row>
+          <b-row v-if="scrambled.allow">
+            <b-col>
+              <div title="Rührei zubereiten und verkaufen">{{"Rührei "}}<img src="https://s12.directupload.net/images/200610/2fzebtgy.png" height="15"></div>
+            </b-col>
+            <b-col cols="5">
+              <b-button @click="makeScarmbled" variant="primary" class="mt-2" :disabled="score < scrambled.price || milk.count < scrambled.milk || butter.count < scarmbled.butter" title="8 Eier, 1 Milch, 1 Butter">8<img src="https://s12.directupload.net/images/200610/dzy5y4gv.png" height="15"> 1<img src="https://s12.directupload.net/images/200610/lil9sxqw.png" height="15"> 1<img src="https://cdn2.iconfinder.com/data/icons/food-drink-60/50/1F9C8-butter-512.png" height="15">
+              </b-button>
+            </b-col>
+          </b-row>
+          <b-row>
+            <b-col>
+              <div title="Sablés backen und verkaufen">{{"Sablés "}}<img src="https://s12.directupload.net/images/200609/hh4agm23.png" height="15"></div>
+            </b-col>
+            <b-col cols="5">
+              <b-button @click="makeSables" variant="primary" class="mt-2" :disabled="flour.count < sables.flour || sugar.count < sables.sugar || butter.count < sables.butter" title="3 Mehl, 1 Zucker, 2 Butter">3<img src="https://cdn2.iconfinder.com/data/icons/bakery-color/200/23-512.png" height="15"> 1<img src="https://s12.directupload.net/images/200609/57mqmihy.png" height="15"> 2<img src="https://cdn2.iconfinder.com/data/icons/food-drink-60/50/1F9C8-butter-512.png" height="15">
+              </b-button>
+            </b-col>
+          </b-row>
+        </b-layout>
+      </b-card>
+      <b-card v-if="chicken.allow" style="max-width: 20rem;"><template v-slot:header>Hühner<p></p><p><small>Kaufe eierlegende Hühner und verbessere sie</small></p></template>
+        <b-layout fluid>
+          <b-row>
+            <b-col>
+              <div>{{ chicken.count }} {{ chicken.count === 1 ? "Huhn" : "Hühner"}}<img src="https://s12.directupload.net/images/200610/88b8fr4x.png" height="15"></div>
             </b-col>
             <b-col cols="4">
               <b-button @click="buyChicken" variant="primary" :disabled="score < chicken.price">{{ chicken.price }}
@@ -57,7 +156,38 @@
               </b-button>
             </b-col>
           </b-row>
-        </b-layout>
+                 </b-layout>
+      </b-card>
+      <b-card v-if="apprentice.allow" style="max-width: 20rem;"><template v-slot:header>Personal<p></p><p><small>Immer nützlich...</small></p></template>
+        <b-layout fluid>
+          <b-row>
+            <b-col>
+              <div title="hilft in der Backstube">{{ apprentice.count }} {{ apprentice.count === 1 ? "Lehrling" : "Lehrlinge"}}</div>
+            </b-col>
+            <b-col cols="4">
+              <b-button @click="hireApprentice" variant="primary" :disabled="money < apprentice.price">{{ apprentice.price }}
+              </b-button>
+            </b-col>
+          </b-row>
+          <b-row>
+            <b-col>
+              <div title="sorgt dafür, dass die Hühner mehr Eier legen... fragt sich nur wie">{{ animalKeep.count }} Tierflüsterer</div>
+            </b-col>
+            <b-col cols="4">
+              <b-button @click="hireAnimalKeep" variant="primary" class="mt-2" :disabled="money < animalKeep.price">{{ animalKeep.price }}
+              </b-button>
+            </b-col>
+          </b-row>
+          <b-row>
+            <b-col>
+              <div title="entdeckt bessere Rezepte">{{ alchemist.count }} {{ alchemist.count === 1 ? "Alchemist" : "Alchemisten"}}</div>
+            </b-col>
+            <b-col cols="4">
+              <b-button id="alchButton" @click="hireAlchemist" variant="primary" class="mt-2" :disabled="money < alchemist.price || alchemist.count > 0">{{ alchemist.price }}
+              </b-button>
+            </b-col>
+          </b-row>
+                 </b-layout>
       </b-card>
     </b-card-group>
     <!-- DEBUG
@@ -86,7 +216,102 @@
             stepsRequired: 1000,
             stepsDone: 0
           }
-        }
+        },
+        flour: {
+          count: 0,
+          price: 5,
+          allow: false,
+        },
+        sugar: {
+          count: 0,
+          price: 5,
+        },
+        butter: {
+          count: 0,
+          price: 10,
+        },
+        sables: {
+          count:0,
+          butter: 2,
+          sugar: 1,
+          flour: 3,
+          value: 20,
+        
+        },
+        apprentice: {
+          count:0,
+          price:300,
+          allow:false,
+          production: {
+            strength: 1,
+            stepsRequired: 1000,
+            stepsDone: 0
+          }
+        },
+        animalKeep: {
+          count:0,
+          price:400,
+        
+        },
+        alchemist: {
+          count:0,
+          price:500,
+          allow:true,
+        },
+        recipes: [
+          bread={
+            flour: 1,
+            value: 2,
+            allow: false,
+          },
+          omelette={
+            price: 8,
+            milk: 1,
+            butter: 1,
+            value: 20,
+            allow: false,
+          },
+          apfelstrudel={
+            flour: 2,
+            apples: 2,
+            butter:1,
+            value: 30,
+            allow: false,
+          },
+          eggsalad={
+            price: 10,
+            butter: 1,
+            value: 5,
+            allow: false,
+          },
+          scrambled={
+            price: 8,
+            milk:1,
+            butter: 1,
+            value: 10,
+            allow: false,
+          },
+          boiledEggs= {
+            price: 5,
+            value: 1,
+            allow: false,
+          },
+       /* demon(
+          alert("Dein Alchemist hat unglücklicherweise einen menschenfressenden Dämon beschworen. Vielleicht war er nicht ganz der Richtige für den Job."),
+          alchemist.count--,
+          elem = document.getElementById("alchButton"),
+          elem.value = "500",
+          this.alchemist.allow =true,
+
+        ),
+        explosion(
+          alert("Dein Alchemist hat sich bei einer Explosion selbst verletzt und wird für kurze Zeit ausser Gefecht gesetzt sein."),
+          money -= BigInt(50),
+        ),
+        eggnog(
+         window.confirm("Dein Alchemist ist bei einem Versuch auf Eierlikör gestossen. Ein sehr lukratives Geschäft, aber wenn du von der Polizei erwischt wirst, könnte es schwerwiegende Konsequenzen geben. Möchtest du das Getränk trotzdem produzieren?")
+        ),*/
+        ]
       },
       created: function () {
         BigInt.prototype.toJSON = function () { return this.toString() }
@@ -124,10 +349,54 @@
             this.chicken.production.stepsRequired = Math.floor(this.chicken.production.stepsRequired * 0.95)
             this.chicken.improvmentprice = Math.ceil(this.chicken.improvmentprice * 1.5)
           }
-        }
+        },
+        buyFlour: function () {
+          this.score -=BigInt(this.flour.price)
+          this.flour.count++
+        },
+        buySugar: function(){
+          this.score -=BigInt(this.sugar.price)
+          this.sugar.count++
+        },
+        buyButter: function(){
+          this.score -=BigInt(this.butter.price)
+          this.butter.count++
+        },
+        makeSables: function(){
+          this.money += BigInt(20)
+          this.butter.count -=2
+          this.sugar.count -=1
+          this.flour.count -=3
+        },
+        hireApprentice: function(){
+          this.money -= BigInt(300)
+          this.apprentice.count++
+          this.apprentice.price = Math.ceil(this.apprentice.price * 1.2)
+        },
+        hireAnimalKeep: function(){
+          this.money -= BigInt(400)
+          this.animalKeep.count++
+          this.animalKeep.price = Math.ceil(this.animalKeep.price * 1.2)
+          this.chicken.production.stepsRequired = Math.floor(this.chicken.production.stepsRequired * 0.95)
+          },
+        hireAlchemist: function(){
+          var elem = document.getElementById("alchButton");
+          if(elem.value=="500"){
+            this.money -= BigInt(500)
+            this.alchemist.count++
+            elem.value = "Experimentieren"}
+         if(elem.value=="Experimentieren"){
+           this.alchemist.allow = false
+           setTimeout ("this.alchemist.allow = true",600000)
+           discoverRex()
+           }
+        },
+        discoverRex: function(){
+          let pick = recipes[Math.floor(Math.random() * recipes.length)]
+          recipes[pick]()
+        },
       }
     })
   </script>
 </body>
-
 </html>
