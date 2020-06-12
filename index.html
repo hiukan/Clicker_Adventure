@@ -24,7 +24,7 @@
 <body>
   <div id="app">
     <b-card-group deck>
-      <b-card style="max-width: 20rem;" header="Eier">
+      <b-card style="max-width: 20rem;"><template v-slot:header>Eier<p></p><p><small>Woher kommen sie eigentlich?</small></p></template>
         <b-layout fluid>
           <b-row>
             <b-col>
@@ -37,6 +37,7 @@
           </b-row>
         </b-layout>
       </b-card>
+
       <b-card v-if="flour.allow" style="max-width:25rem;">
         <template v-slot:header>
 
@@ -44,12 +45,15 @@
           <span class="float-right">Geld: {{money}}</span>
           <p></p>
           <p><small>Tausche Eier gegen Zutaten und verkaufe die gebackenen Waren für Geld</small></p>
+
         </template>
         <b-layout fluid>
           <b-row>
             <b-col>
+
               <div>{{flour.count}} {{"Mehl "}}<img
                   src="https://cdn2.iconfinder.com/data/icons/bakery-color/200/23-512.png" height="15"></div>
+
             </b-col>
             <b-col cols="5">
               <b-button @click="buyFlour" variant="primary" :disabled="score < flour.price">{{ flour.price }}
@@ -58,17 +62,20 @@
           </b-row>
           <b-row>
             <b-col>
+
               <div>{{sugar.count}} {{"Zucker "}}<img src="https://s12.directupload.net/images/200609/57mqmihy.png"
                   height="15"></div>
             </b-col>
             <b-col cols="5">
               <b-button @click="buySugar" variant="primary" class="mt-2" :disabled="score < sugar.price">
                 {{ sugar.price }}
+
               </b-button>
             </b-col>
           </b-row>
           <b-row>
             <b-col>
+
               <div>{{butter.count}} {{"Butter "}}<img
                   src="https://cdn2.iconfinder.com/data/icons/food-drink-60/50/1F9C8-butter-512.png" height="15"></div>
             </b-col>
@@ -187,11 +194,13 @@
                 title="8 Eier, 1 Milch, 1 Butter">8<img src="https://s12.directupload.net/images/200610/dzy5y4gv.png"
                   height="15"> 1<img src="https://s12.directupload.net/images/200610/lil9sxqw.png" height="15"> 1<img
                   src="https://cdn2.iconfinder.com/data/icons/food-drink-60/50/1F9C8-butter-512.png" height="15">
+
               </b-button>
             </b-col>
           </b-row>
           <b-row>
             <b-col>
+
               <div title="Sablés backen und verkaufen">{{"Sablés "}}<img
                   src="https://s12.directupload.net/images/200609/hh4agm23.png" height="15"></div>
             </b-col>
@@ -202,14 +211,17 @@
                   src="https://cdn2.iconfinder.com/data/icons/bakery-color/200/23-512.png" height="15"> 1<img
                   src="https://s12.directupload.net/images/200609/57mqmihy.png" height="15"> 2<img
                   src="https://cdn2.iconfinder.com/data/icons/food-drink-60/50/1F9C8-butter-512.png" height="15">
+
               </b-button>
             </b-col>
           </b-row>
         </b-layout>
       </b-card>
+
       <b-card v-if="chicken.allow" style="max-width: 20rem;"><template v-slot:header>Hühner<p></p>
           <p><small>Kaufe eierlegende Hühner und verbessere sie</small></p>
         </template>
+
         <b-layout fluid>
           <b-row>
             <b-col>
@@ -217,7 +229,7 @@
                   src="https://s12.directupload.net/images/200610/88b8fr4x.png" height="15"></div>
             </b-col>
             <b-col cols="4">
-              <b-button @click="buyChicken" variant="primary" :disabled="score < chicken.price">{{ chicken.price }}
+              <b-button @click="buyChicken" variant="primary" :disabled="money < chicken.price">{{ chicken.price }}
               </b-button>
             </b-col>
           </b-row>
@@ -226,13 +238,46 @@
               Verbessere Hühner
             </b-col>
             <b-col cols="4">
+
               <b-button @click="improveChicken" variant="primary" class="mt-2"
                 :disabled="score < chicken.improvmentprice">
+
                 {{ chicken.improvmentprice }}
               </b-button>
             </b-col>
           </b-row>
-        </b-layout>
+                 </b-layout>
+      </b-card>
+      <b-card v-if="apprentice.allow" style="max-width: 20rem;"><template v-slot:header>Personal<p></p><p><small>Immer nützlich...</small></p></template>
+        <b-layout fluid>
+          <b-row>
+            <b-col>
+              <div title="hilft in der Backstube">{{ apprentice.count }} {{ apprentice.count === 1 ? "Lehrling" : "Lehrlinge"}}</div>
+            </b-col>
+            <b-col cols="4">
+              <b-button @click="hireApprentice" variant="primary" :disabled="money < apprentice.price">{{ apprentice.price }}
+              </b-button>
+            </b-col>
+          </b-row>
+          <b-row>
+            <b-col>
+              <div title="sorgt dafür, dass die Hühner mehr Eier legen... fragt sich nur wie">{{ animalKeep.count }} Tierflüsterer</div>
+            </b-col>
+            <b-col cols="4">
+              <b-button @click="hireAnimalKeep" variant="primary" class="mt-2" :disabled="money < animalKeep.price">{{ animalKeep.price }}
+              </b-button>
+            </b-col>
+          </b-row>
+          <b-row>
+            <b-col>
+              <div title="entdeckt bessere Rezepte">{{ alchemist.count }} {{ alchemist.count === 1 ? "Alchemist" : "Alchemisten"}}</div>
+            </b-col>
+            <b-col cols="4">
+              <b-button @click="hireAlchemist" variant="primary" class="mt-2" :disabled="money < alchemist.price || alchemist.count > 0">{{ alchemist.price }}
+              </b-button>
+            </b-col>
+          </b-row>
+                 </b-layout>
       </b-card>
       <b-card v-if="apprentice.allow" style="max-width: 20rem;"><template v-slot:header>Personal<p></p>
           <p><small>Immer nützlich...</small></p>
@@ -287,6 +332,7 @@
       data: {
         message: 'Hello Vue!',
         score: 0n,
+        money: 0n,
         increment: 0.00,
         buttonValue: 1,
         chicken: {
@@ -314,6 +360,7 @@
           count: 0,
           price: 10,
         },
+
         milk: {
           count: 0,
           price: 10,
@@ -336,6 +383,7 @@
           count: 0,
           price: 300,
           allow: false,
+
           production: {
             strength: 1,
             stepsRequired: 1000,
@@ -343,6 +391,7 @@
           }
         },
         animalKeep: {
+
           count: 0,
           price: 400,
 
@@ -408,6 +457,7 @@
             price: 1,
             value: 5,
           }
+
         }
       },
       created: function () {
@@ -462,16 +512,33 @@
             this.score += BigInt(this.chicken.production.strength)
             this.chicken.production.stepsDone = 0
           }
+          this.apprentice.production.stepsDone += this.apprentice.count * this.apprentice.production.strength
+          if (this.apprentice.production.stepsDone >= this.apprentice.production.stepsRequired) {
+            this.money += BigInt(this.apprentice.production.strength)
+            this.apprentice.production.stepsDone = 0
+          }
+         
+               if (!this.chicken.allow && this.money >= BigInt(50)){
+                this.chicken.allow = true
+                
+          }
+         
+               if (!this.apprentice.allow && this.money>= BigInt(300)){
+              this.apprentice.allow = true
+               
+          }
         },
         addManual: function () {
           this.score += BigInt(this.buttonValue)
+
           if (this.score >= BigInt(5)) {
+
             this.flour.allow = true
           }
         },
         buyChicken: function () {
-          if (this.score >= this.chicken.price) {
-            this.score -= BigInt(this.chicken.price)
+          if (this.money >= this.chicken.price) {
+            this.money -= BigInt(this.chicken.price)
             this.chicken.count++
             this.chicken.price = Math.ceil(this.chicken.price * 1.2)
             if (this.chicken.count == 5) {
@@ -480,13 +547,14 @@
           }
         },
         improveChicken: function () {
-          if (this.score >= this.chicken.improvmentprice) {
-            this.score -= BigInt(this.chicken.improvmentprice)
+          if (this.money >= this.chicken.improvmentprice) {
+            this.money -= BigInt(this.chicken.improvmentprice)
             this.chicken.production.stepsRequired = Math.floor(this.chicken.production.stepsRequired * 0.95)
             this.chicken.improvmentprice = Math.ceil(this.chicken.improvmentprice * 1.5)
           }
         },
         buyFlour: function () {
+
           this.score -= BigInt(this.flour.price)
           this.flour.count++
         },
@@ -575,15 +643,19 @@
 
         },
         hireApprentice: function () {
+
           this.money -= BigInt(300)
           this.apprentice.count++
           this.apprentice.price = Math.ceil(this.apprentice.price * 1.2)
         },
+
         hireAnimalKeep: function () {
+
           this.money -= BigInt(400)
           this.animalKeep.count++
           this.animalKeep.price = Math.ceil(this.animalKeep.price * 1.2)
           this.chicken.production.stepsRequired = Math.floor(this.chicken.production.stepsRequired * 0.95)
+
         },
         hireAlchemist: function () {
           var elem = document.getElementById("alchButton");
@@ -602,6 +674,7 @@
           const pick = this.alchemist.recipes[Math.floor(Math.random() * this.alchemist.recipes.length)]
           this.doIt(pick)
         },
+
       }
 
     })
