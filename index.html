@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Ultra Hühnergame</title>
+  <title>ZUltra Hühnergame</title>
 
   <!-- Add Vue to the Project -->
   <script src="https://unpkg.com/vue"></script>
@@ -28,7 +28,7 @@
         <b-layout fluid>
           <b-row>
             <b-col>
-              {{ score }} {{ score === 1n ? "Ei" : "Eier"}}<img src="https://s12.directupload.net/images/200610/dzy5y4gv.png" height="15">
+              {{ score }} {{ score === 1n ? "Ei " : "Eier "}}<img src="https://s12.directupload.net/images/200610/dzy5y4gv.png" height="15">
             </b-col>
             <b-col cols="4">
               <b-button @click="addManual" variant="primary">+ {{ buttonValue }}</b-button>
@@ -70,6 +70,24 @@
               </b-button>
             </b-col>
           </b-row>
+          <b-row v-if="apples.allow">
+            <b-col>
+              <div>{{apples.count}} {{"score === 1n ? "Apfel " : "Äpfel " "}}<img src="https://s12.directupload.net/images/200610/pndyh9ie.png" height="15"></div>
+            </b-col>
+            <b-col cols="5">
+              <b-button @click="buyApples" variant="primary" class="mt-2" :disabled="score < apples.price">{{ apples.price }}
+              </b-button>
+            </b-col>
+          </b-row>
+          <b-row v-if="milk.allow">
+            <b-col>
+              <div>{{milk.count}} {{"Milch "}}<img src="https://s12.directupload.net/images/200610/lil9sxqw.png" height="15"></div>
+            </b-col>
+            <b-col cols="5">
+              <b-button @click="buyMilk" variant="primary" class="mt-2" :disabled="score < milk.price">{{ milk.price }}
+              </b-button>
+            </b-col>
+          </b-row>
           <b-row v-if="apfelstrudel.allow">
             <b-col>
               <div title="Apfelstrudel backen und verkaufen">{{"Apfelstrudel "}}<img src="https://comps.gograph.com/ggb/88115090" height="15"></div>
@@ -106,6 +124,15 @@
               </b-button>
             </b-col>
           </b-row>
+          <b-row v-if="eggnog.allow">
+            <b-col>
+              <div title="Eggnog zubereiten und verkaufen">{{"Eggnog "}}<img src="https://s12.directupload.net/images/200612/7ix88x2b.png" height="15"></div>
+            </b-col>
+            <b-col cols="5">
+              <b-button @click="makeEggnog" variant="primary" class="mt-2" :disabled="score < eggnog.price" title="1 Ei">5<img src="https://s12.directupload.net/images/200610/dzy5y4gv.png" height="15">
+              </b-button>
+            </b-col>
+          </b-row>
           <b-row v-if="omelette.allow">
             <b-col>
               <div title="Omelettes zubereiten und verkaufen">{{"Omelettes "}}<img src="https://s12.directupload.net/images/200610/287g64s8.png" height="15"></div>
@@ -120,7 +147,7 @@
               <div title="Rührei zubereiten und verkaufen">{{"Rührei "}}<img src="https://s12.directupload.net/images/200610/2fzebtgy.png" height="15"></div>
             </b-col>
             <b-col cols="5">
-              <b-button @click="makeScarmbled" variant="primary" class="mt-2" :disabled="score < scrambled.price || milk.count < scrambled.milk || butter.count < scarmbled.butter" title="8 Eier, 1 Milch, 1 Butter">8<img src="https://s12.directupload.net/images/200610/dzy5y4gv.png" height="15"> 1<img src="https://s12.directupload.net/images/200610/lil9sxqw.png" height="15"> 1<img src="https://cdn2.iconfinder.com/data/icons/food-drink-60/50/1F9C8-butter-512.png" height="15">
+              <b-button @click="makeScrambled" variant="primary" class="mt-2" :disabled="score < scrambled.price || milk.count < scrambled.milk || butter.count < scrambled.butter" title="8 Eier, 1 Milch, 1 Butter">8<img src="https://s12.directupload.net/images/200610/dzy5y4gv.png" height="15"> 1<img src="https://s12.directupload.net/images/200610/lil9sxqw.png" height="15"> 1<img src="https://cdn2.iconfinder.com/data/icons/food-drink-60/50/1F9C8-butter-512.png" height="15">
               </b-button>
             </b-col>
           </b-row>
@@ -230,6 +257,16 @@
           count: 0,
           price: 10,
         },
+        milk:{
+          count: 0,
+          price: 10,
+          allow: false,
+        },
+        apples:{
+          count:0,
+          price:2,
+          allow:false,
+        },
         sables: {
           count:0,
           butter: 2,
@@ -257,61 +294,63 @@
           count:0,
           price:500,
           allow:true,
+          recipes: [
+            "bread", "omelette", "apfelstrudel", "eggsalad", "scrambled", "boiledEggs", "demon", "explosion", "eggnog"
+          ]
         },
-        recipes: [
-          bread={
+        recipes: {
+          bread:{
             flour: 1,
             value: 2,
             allow: false,
+            
           },
-          omelette={
+          omelette: {
             price: 8,
             milk: 1,
             butter: 1,
             value: 20,
             allow: false,
+            
           },
-          apfelstrudel={
+          apfelstrudel: {
             flour: 2,
             apples: 2,
             butter:1,
             value: 30,
             allow: false,
+            
           },
-          eggsalad={
+          eggsalad: {
             price: 10,
             butter: 1,
             value: 5,
             allow: false,
+            
           },
-          scrambled={
+          scrambled: {
             price: 8,
             milk:1,
             butter: 1,
             value: 10,
             allow: false,
+            
           },
-          boiledEggs= {
+          boiledEggs: {
             price: 5,
             value: 1,
             allow: false,
           },
-       /* demon(
-          alert("Dein Alchemist hat unglücklicherweise einen menschenfressenden Dämon beschworen. Vielleicht war er nicht ganz der Richtige für den Job."),
-          alchemist.count--,
-          elem = document.getElementById("alchButton"),
-          elem.value = "500",
-          this.alchemist.allow =true,
-
-        ),
-        explosion(
-          alert("Dein Alchemist hat sich bei einer Explosion selbst verletzt und wird für kurze Zeit ausser Gefecht gesetzt sein."),
-          money -= BigInt(50),
-        ),
-        eggnog(
-         window.confirm("Dein Alchemist ist bei einem Versuch auf Eierlikör gestossen. Ein sehr lukratives Geschäft, aber wenn du von der Polizei erwischt wirst, könnte es schwerwiegende Konsequenzen geben. Möchtest du das Getränk trotzdem produzieren?")
-        ),*/
-        ]
+          demon: { 
+          
+          },
+          explosion: {
+          },
+          eggnog: {
+           allow: false,
+           price: 1,
+           value: 5,
+        }
       },
       created: function () {
         BigInt.prototype.toJSON = function () { return this.toString() }
@@ -320,6 +359,45 @@
         }, 10)
       },
       methods: {
+        doIt: function(what) {
+          switch(what){
+            case "eggnog": 
+              window.confirm("Dein Alchemist ist bei einem Versuch auf Eierlikör gestossen. Ein sehr lukratives Geschäft, aber wenn du von der Polizei erwischt wirst, könnte es schwerwiegende Konsequenzen geben. Möchtest du das Getränk trotzdem produzieren?")
+              break
+            case "demon":
+              alert("Dein Alchemist hat unglücklicherweise einen menschenfressenden Dämon beschworen. Vielleicht war er nicht ganz der Richtige für den Job.")
+              this.alchemist.count--
+              elem = document.getElementById("alchButton")
+              elem.value = "500"
+              this.alchemist.allow =true
+              break
+            case "explosion":
+              alert("Dein Alchemist hat sich bei einer Explosion selbst verletzt und wird für kurze Zeit ausser Gefecht gesetzt sein.")
+              money -= BigInt(50)
+              break
+            case "boiledEggs":
+              this.boiledEggs.allow = true
+              break
+            case "scrambled":
+              this.scrambled.allow = true
+              this.milk.allow = true
+              break
+            case "eggsalad":
+              this.eggsalad.allow = true
+              break
+            case "apfelstrudel":
+              this.apfelstrudel.allow = true
+              this.apples.allow = true
+              break
+            case "omelette":
+              this.omelette.allow = true
+              this.milk.allow = true
+              break
+            case "bread": 
+              this.bread.allow = true
+              break
+          }
+        },
         update: function () {
           this.chicken.production.stepsDone += this.chicken.count * this.chicken.production.strength
           if (this.chicken.production.stepsDone >= this.chicken.production.stepsRequired) {
@@ -329,8 +407,8 @@
         },
         addManual: function () {
           this.score += BigInt(this.buttonValue)
-          if (this.score == BigInt(50)) {
-            this.chicken.allow = true
+          if (this.score >= BigInt(5)) {
+            this.flour.allow = true
           }
         },
         buyChicken: function () {
@@ -362,11 +440,81 @@
           this.score -=BigInt(this.butter.price)
           this.butter.count++
         },
+        buyApples: function(){
+          this.score -=BigInt(this.apples.price)
+          this.apples.count++
+        },
+        buyMilk: function(){
+          this.score -=BigInt(this.milk.price)
+          this.milk.count++
+        },
         makeSables: function(){
-          this.money += BigInt(20)
-          this.butter.count -=2
-          this.sugar.count -=1
-          this.flour.count -=3
+          this.money += BigInt(this.sables.value)
+          this.butter.count -=BigInt(this.sables.butter)
+          this.sugar.count -= BigInt(this.sables.sugar)
+          this.flour.count -= BigInt(this.sables.flour)
+          this.apples.count -= BigInt(this.sables.apples)
+          this.milk.count -= BigInt(this.sables.milk)
+          this.score -= BigInt(this.sables.price)
+        },
+        makeApfelstrudel: function(){
+          this.money += BigInt(this.apfelstrudel.value)
+          this.butter.count -= BigInt(this.apfelstrudel.butter)
+          this.sugar.count -= BigInt(this.apfelstrudel.sugar)
+          this.flour.count -= BigInt(this.apfelstrudel.flour)
+          this.apples.count -= BigInt(this.apfelstrudel.apples)
+          this.milk.count -= BigInt(this.apfelstrudel.milk)
+          this.score -= BigInt(this.apfelstrudel.price)
+        },
+        makeBoiledEggs: function(){
+          this.money += BigInt(this.boiledEggs.value)
+          this.butter.count -= BigInt(this.boiledEggs.butter)
+          this.sugar.count -= BigInt(this.boiledEggs.sugar)
+          this.flour.count -= BigInt(this.boiledEggs.flour)
+          this.apples.count -= BigInt(this.boiledEggs.apples)
+          this.milk.count -= BigInt(this.boiledEggs.milk)
+          this.score -= BigInt(this.boiledEggs.price)
+        },
+        makeBread: function(){
+          this.money += BigInt(this.bread.value)
+          this.butter.count -= BigInt(this.bread.butter)
+          this.sugar.count -= BigInt(this.bread.sugar)
+          this.flour.count -= BigInt(this.bread.flour)
+          this.apples.count -= BigInt(this.bread.apples)
+          this.milk.count -= BigInt(this.bread.milk)
+          this.score -= BigInt(this.bread.price)
+        },
+        makeEggsalad: function(){
+          this.money += BigInt(this.eggsalad.value)
+          this.butter.count -= BigInt(this.eggsalad.butter)
+          this.sugar.count -= BigInt(this.eggsalad.sugar)
+          this.flour.count -= BigInt(this.eggsalad.flour)
+          this.apples.count -= BigInt(this.eggsalad.apples)
+          this.milk.count -= BigInt(this.eggsalad.milk)
+          this.score -= BigInt(this.eggsalad.price)
+        },
+        makeOmelettes: function(){
+          this.money += BigInt(this.omelette.value)
+          this.butter.count -= BigInt(this.omelette.butter)
+          this.sugar.count -= BigInt(this.omelette.sugar)
+          this.flour.count -= BigInt(this.omelette.flour)
+          this.apples.count -= BigInt(this.omelette.apples)
+          this.milk.count -= BigInt(this.omelette.milk)
+          this.score -= BigInt(this.omelette.price)
+        },
+        makeScrambled: function(){
+          this.money += BigInt(this.scrambled.value)
+          this.butter.count -= BigInt(this.scrambled.butter)
+          this.sugar.count -= BigInt(this.scrambled.sugar)
+          this.flour.count -= BigInt(this.scrambled.flour)
+          this.apples.count -= BigInt(this.scrambled.apples)
+          this.milk.count -= BigInt(this.scrambled.milk)
+          this.score -= BigInt(this.scrambled.price)
+        },
+        makeEggnog: function(){
+          this.money += BigInt(this.eggnog.value)
+          this.score -= BigInt(this.eggnog.price)
+
         },
         hireApprentice: function(){
           this.money -= BigInt(300)
@@ -387,16 +535,16 @@
             elem.value = "Experimentieren"}
          if(elem.value=="Experimentieren"){
            this.alchemist.allow = false
-           setTimeout ("this.alchemist.allow = true",600000)
+           setTimeout (()=>{this.alchemist.allow = true},600000)
            discoverRex()
            }
         },
         discoverRex: function(){
-          let pick = recipes[Math.floor(Math.random() * recipes.length)]
-          recipes[pick]()
+          const pick = this.alchemist.recipes[Math.floor(Math.random() * this.alchemist.recipes.length)]
+          this.doIt(pick)
         },
       }
-    })
-  </script>
+    }})
+    </script>
 </body>
 </html>
