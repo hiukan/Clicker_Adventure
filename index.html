@@ -72,7 +72,7 @@
           </b-row>
           <b-row v-if="apples.allow">
             <b-col>
-              <div>{{apples.count}} {{"score === 1n ? "Apfel " : "Äpfel " "}}<img src="https://s12.directupload.net/images/200610/pndyh9ie.png" height="15"></div>
+              <div>{{apples.count}} {{score === 1n ? "Apfel " : "Äpfel "}}<img src="https://s12.directupload.net/images/200610/pndyh9ie.png" height="15"></div>
             </b-col>
             <b-col cols="5">
               <b-button @click="buyApples" variant="primary" class="mt-2" :disabled="score < apples.price">{{ apples.price }}
