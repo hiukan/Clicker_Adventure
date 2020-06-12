@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>ZUltra Hühnergame</title>
+  <title></title>
 
   <!-- Add Vue to the Project -->
   <script src="https://unpkg.com/vue"></script>
@@ -106,7 +106,7 @@
               </b-button>
             </b-col>
           </b-row>
-          <b-row v-if="apfelstrudel.allow">
+          <b-row v-if="recipes.apfelstrudel.allow">
             <b-col>
               <div title="Apfelstrudel backen und verkaufen">{{"Apfelstrudel "}}<img
                   src="https://comps.gograph.com/ggb/88115090" height="15"></div>
@@ -121,7 +121,7 @@
               </b-button>
             </b-col>
           </b-row>
-          <b-row v-if="bread.allow">
+          <b-row v-if="recipes.bread.allow">
             <b-col>
               <div title="Brot backen und verkaufen">{{"Brot "}}<img
                   src="https://cdn0.iconfinder.com/data/icons/bakery-filled-color/300/91516644Untitled-3-512.png"
@@ -134,7 +134,7 @@
               </b-button>
             </b-col>
           </b-row>
-          <b-row v-if="eggsalad.allow">
+          <b-row v-if="recipes.eggsalad.allow">
             <b-col>
               <div title="Eiersalat zubereiten und verkaufen">{{"Eiersalat "}}<img
                   src="https://s12.directupload.net/images/200610/jzni28n6.jpg" height="15"></div>
@@ -147,7 +147,7 @@
               </b-button>
             </b-col>
           </b-row>
-          <b-row v-if="boiledEggs.allow">
+          <b-row v-if="recipes.boiledEggs.allow">
             <b-col>
               <div title="Eier kochen und verkaufen">{{"gekochte Eier "}}<img
                   src="https://s12.directupload.net/images/200610/wejd4z9l.png" height="15"></div>
@@ -158,7 +158,7 @@
               </b-button>
             </b-col>
           </b-row>
-          <b-row v-if="eggnog.allow">
+          <b-row v-if="recipes.eggnog.allow">
             <b-col>
               <div title="Eggnog zubereiten und verkaufen">{{"Eggnog "}}<img
                   src="https://s12.directupload.net/images/200612/7ix88x2b.png" height="15"></div>
@@ -169,7 +169,7 @@
               </b-button>
             </b-col>
           </b-row>
-          <b-row v-if="omelette.allow">
+          <b-row v-if="recipes.omelette.allow">
             <b-col>
               <div title="Omelettes zubereiten und verkaufen">{{"Omelettes "}}<img
                   src="https://s12.directupload.net/images/200610/287g64s8.png" height="15"></div>
@@ -183,7 +183,7 @@
               </b-button>
             </b-col>
           </b-row>
-          <b-row v-if="scrambled.allow">
+          <b-row v-if="recipes.scrambled.allow">
             <b-col>
               <div title="Rührei zubereiten und verkaufen">{{"Rührei "}}<img
                   src="https://s12.directupload.net/images/200610/2fzebtgy.png" height="15"></div>
