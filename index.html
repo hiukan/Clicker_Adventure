@@ -24,7 +24,9 @@
 <body>
   <div id="app">
     <b-card-group deck>
-      <b-card style="max-width: 20rem;"><template v-slot:header>Eier<p></p><p><small>Woher kommen sie eigentlich?</small></p></template>
+      <b-card style="max-width: 20rem;"><template v-slot:header>Eier<p></p>
+          <p><small>Woher kommen sie eigentlich?</small></p>
+        </template>
         <b-layout fluid>
           <b-row>
             <b-col>
@@ -37,51 +39,44 @@
           </b-row>
         </b-layout>
       </b-card>
-
       <b-card v-if="flour.allow" style="max-width:25rem;">
         <template v-slot:header>
-
           Backstube
           <span class="float-right">Geld: {{money}}</span>
           <p></p>
           <p><small>Tausche Eier gegen Zutaten und verkaufe die gebackenen Waren für Geld</small></p>
-
         </template>
         <b-layout fluid>
           <b-row>
             <b-col>
-
               <div>{{flour.count}} {{"Mehl "}}<img
                   src="https://cdn2.iconfinder.com/data/icons/bakery-color/200/23-512.png" height="15"></div>
-
             </b-col>
             <b-col cols="5">
-              <b-button @click="buyFlour" variant="primary" :disabled="score < flour.price">{{ flour.price }}
+              <b-button @click="buyFlour" variant="primary" :disabled="score < flour.price">{{ flour.price }}<img
+                  src="https://s12.directupload.net/images/200610/dzy5y4gv.png" height="15">
               </b-button>
             </b-col>
           </b-row>
           <b-row>
             <b-col>
-
               <div>{{sugar.count}} {{"Zucker "}}<img src="https://s12.directupload.net/images/200609/57mqmihy.png"
                   height="15"></div>
             </b-col>
             <b-col cols="5">
               <b-button @click="buySugar" variant="primary" class="mt-2" :disabled="score < sugar.price">
-                {{ sugar.price }}
-
+                {{ sugar.price }}<img src="https://s12.directupload.net/images/200610/dzy5y4gv.png" height="15">
               </b-button>
             </b-col>
           </b-row>
           <b-row>
             <b-col>
-
               <div>{{butter.count}} {{"Butter "}}<img
                   src="https://cdn2.iconfinder.com/data/icons/food-drink-60/50/1F9C8-butter-512.png" height="15"></div>
             </b-col>
             <b-col cols="5">
               <b-button @click="buyButter" variant="primary" class="mt-2" :disabled="score < butter.price">
-                {{ butter.price }}
+                {{ butter.price }}<img src="https://s12.directupload.net/images/200610/dzy5y4gv.png" height="15">
               </b-button>
             </b-col>
           </b-row>
@@ -92,7 +87,7 @@
             </b-col>
             <b-col cols="5">
               <b-button @click="buyApples" variant="primary" class="mt-2" :disabled="score < apples.price">
-                {{ apples.price }}
+                {{ apples.price }}<img src="https://s12.directupload.net/images/200610/dzy5y4gv.png" height="15">
               </b-button>
             </b-col>
           </b-row>
@@ -102,18 +97,19 @@
                   height="15"></div>
             </b-col>
             <b-col cols="5">
-              <b-button @click="buyMilk" variant="primary" class="mt-2" :disabled="score < milk.price">{{ milk.price }}
+              <b-button @click="buyMilk" variant="primary" class="mt-2" :disabled="score < milk.price">
+                {{ milk.price }}<img src="https://s12.directupload.net/images/200610/dzy5y4gv.png" height="15">
               </b-button>
             </b-col>
           </b-row>
           <b-row v-if="recipes.apfelstrudel.allow">
             <b-col>
-              <div title="Apfelstrudel backen und verkaufen">{{"Apfelstrudel "}}<img
+              <div title="Apfelstrudel backen und verkaufen (30g)">{{"Apfelstrudel "}}<img
                   src="https://comps.gograph.com/ggb/88115090" height="15"></div>
             </b-col>
             <b-col cols="5">
               <b-button @click="makeApfelstrudel" variant="primary" class="mt-2"
-                :disabled="flour.count < apfelstrudel.flour || apples.count < apfelstrudel.apples || butter.count < apfelstrudel.butter"
+                :disabled="flour.count < recipes.apfelstrudel.flour || apples.count < recipes.apfelstrudel.apples || butter.count < recipes.apfelstrudel.butter"
                 title="2 Mehl, 2 Äpfel, 1 Butter">2<img
                   src="https://cdn2.iconfinder.com/data/icons/bakery-color/200/23-512.png" height="15"> 2<img
                   src="https://s12.directupload.net/images/200610/pndyh9ie.png" height="15"> 1<img
@@ -123,12 +119,12 @@
           </b-row>
           <b-row v-if="recipes.bread.allow">
             <b-col>
-              <div title="Brot backen und verkaufen">{{"Brot "}}<img
+              <div title="Brot backen und verkaufen (2g)">{{"Brot "}}<img
                   src="https://cdn0.iconfinder.com/data/icons/bakery-filled-color/300/91516644Untitled-3-512.png"
                   height="15"></div>
             </b-col>
             <b-col cols="5">
-              <b-button @click="makeBread" variant="primary" class="mt-2" :disabled="flour.count < bread.flour"
+              <b-button @click="makeBread" variant="primary" class="mt-2" :disabled="flour.count < recipes.bread.flour"
                 title="1 Mehl">1<img src="https://cdn2.iconfinder.com/data/icons/bakery-color/200/23-512.png"
                   height="15">
               </b-button>
@@ -136,47 +132,49 @@
           </b-row>
           <b-row v-if="recipes.eggsalad.allow">
             <b-col>
-              <div title="Eiersalat zubereiten und verkaufen">{{"Eiersalat "}}<img
+              <div title="Eiersalat zubereiten und verkaufen (5g)">{{"Eiersalat "}}<img
                   src="https://s12.directupload.net/images/200610/jzni28n6.jpg" height="15"></div>
             </b-col>
             <b-col cols="5">
               <b-button @click="makeEggsalad" variant="primary" class="mt-2"
-                :disabled="score < eggsalad.price || butter.count < eggsalad.butter" title="10 Eier, 1 Butter">10<img
-                  src="https://s12.directupload.net/images/200610/dzy5y4gv.png" height="15"> 1<img
-                  src="https://cdn2.iconfinder.com/data/icons/food-drink-60/50/1F9C8-butter-512.png" height="15">
+                :disabled="score < recipes.eggsalad.price || butter.count < recipes.eggsalad.butter"
+                title="10 Eier, 1 Butter">10<img src="https://s12.directupload.net/images/200610/dzy5y4gv.png"
+                  height="15"> 1<img src="https://cdn2.iconfinder.com/data/icons/food-drink-60/50/1F9C8-butter-512.png"
+                  height="15">
               </b-button>
             </b-col>
           </b-row>
           <b-row v-if="recipes.boiledEggs.allow">
             <b-col>
-              <div title="Eier kochen und verkaufen">{{"gekochte Eier "}}<img
+              <div title="Eier kochen und verkaufen (1g)">{{"gekochte Eier "}}<img
                   src="https://s12.directupload.net/images/200610/wejd4z9l.png" height="15"></div>
             </b-col>
             <b-col cols="5">
-              <b-button @click="makeBoiledEggs" variant="primary" class="mt-2" :disabled="score < boiledEggs.price"
-                title="5 Eier">5<img src="https://s12.directupload.net/images/200610/dzy5y4gv.png" height="15">
+              <b-button @click="makeBoiledEggs" variant="primary" class="mt-2"
+                :disabled="score < recipes.boiledEggs.price" title="5 Eier">5<img
+                  src="https://s12.directupload.net/images/200610/dzy5y4gv.png" height="15">
               </b-button>
             </b-col>
           </b-row>
           <b-row v-if="recipes.eggnog.allow">
             <b-col>
-              <div title="Eggnog zubereiten und verkaufen">{{"Eggnog "}}<img
+              <div title="Eggnog zubereiten und verkaufen (5g)">{{"Eggnog "}}<img
                   src="https://s12.directupload.net/images/200612/7ix88x2b.png" height="15"></div>
             </b-col>
             <b-col cols="5">
-              <b-button @click="makeEggnog" variant="primary" class="mt-2" :disabled="score < eggnog.price"
+              <b-button @click="makeEggnog" variant="primary" class="mt-2" :disabled="score < recipes.eggnog.price"
                 title="1 Ei">5<img src="https://s12.directupload.net/images/200610/dzy5y4gv.png" height="15">
               </b-button>
             </b-col>
           </b-row>
           <b-row v-if="recipes.omelette.allow">
             <b-col>
-              <div title="Omelettes zubereiten und verkaufen">{{"Omelettes "}}<img
+              <div title="Omelettes zubereiten und verkaufen (20g)">{{"Omelettes "}}<img
                   src="https://s12.directupload.net/images/200610/287g64s8.png" height="15"></div>
             </b-col>
             <b-col cols="5">
               <b-button @click="makeOmelettes" variant="primary" class="mt-2"
-                :disabled="score < omelette.price || milk.count < omelette.milk || butter.count < omelette.butter"
+                :disabled="score < recipes.omelette.price || milk.count < recipes.omelette.milk || butter.count < recipes.omelette.butter"
                 title="8 Eier, 1 Milch, 1 Butter">8<img src="https://s12.directupload.net/images/200610/dzy5y4gv.png"
                   height="15"> 1<img src="https://s12.directupload.net/images/200610/lil9sxqw.png" height="15"> 1<img
                   src="https://cdn2.iconfinder.com/data/icons/food-drink-60/50/1F9C8-butter-512.png" height="15">
@@ -185,12 +183,12 @@
           </b-row>
           <b-row v-if="recipes.scrambled.allow">
             <b-col>
-              <div title="Rührei zubereiten und verkaufen">{{"Rührei "}}<img
+              <div title="Rührei zubereiten und verkaufen (10g)">{{"Rührei "}}<img
                   src="https://s12.directupload.net/images/200610/2fzebtgy.png" height="15"></div>
             </b-col>
             <b-col cols="5">
               <b-button @click="makeScrambled" variant="primary" class="mt-2"
-                :disabled="score < scrambled.price || milk.count < scrambled.milk || butter.count < scrambled.butter"
+                :disabled="score < recipes.scrambled.price || milk.count < recipes.scrambled.milk || butter.count < recipes.scrambled.butter"
                 title="8 Eier, 1 Milch, 1 Butter">8<img src="https://s12.directupload.net/images/200610/dzy5y4gv.png"
                   height="15"> 1<img src="https://s12.directupload.net/images/200610/lil9sxqw.png" height="15"> 1<img
                   src="https://cdn2.iconfinder.com/data/icons/food-drink-60/50/1F9C8-butter-512.png" height="15">
@@ -200,8 +198,7 @@
           </b-row>
           <b-row>
             <b-col>
-
-              <div title="Sablés backen und verkaufen">{{"Sablés "}}<img
+              <div title="Sablés backen und verkaufen (20g)">{{"Sablés "}}<img
                   src="https://s12.directupload.net/images/200609/hh4agm23.png" height="15"></div>
             </b-col>
             <b-col cols="5">
@@ -211,21 +208,18 @@
                   src="https://cdn2.iconfinder.com/data/icons/bakery-color/200/23-512.png" height="15"> 1<img
                   src="https://s12.directupload.net/images/200609/57mqmihy.png" height="15"> 2<img
                   src="https://cdn2.iconfinder.com/data/icons/food-drink-60/50/1F9C8-butter-512.png" height="15">
-
               </b-button>
             </b-col>
           </b-row>
         </b-layout>
       </b-card>
-
       <b-card v-if="chicken.allow" style="max-width: 20rem;"><template v-slot:header>Hühner<p></p>
           <p><small>Kaufe eierlegende Hühner und verbessere sie</small></p>
         </template>
-
         <b-layout fluid>
           <b-row>
             <b-col>
-              <div>{{ chicken.count }} {{ chicken.count === 1 ? "Huhn" : "Hühner"}}<img
+              <div>{{ chicken.count }} {{ chicken.count === 1 ? "Huhn " : "Hühner "}}<img
                   src="https://s12.directupload.net/images/200610/88b8fr4x.png" height="15"></div>
             </b-col>
             <b-col cols="4">
@@ -238,46 +232,12 @@
               Verbessere Hühner
             </b-col>
             <b-col cols="4">
-
               <b-button @click="improveChicken" variant="primary" class="mt-2"
-                :disabled="score < chicken.improvmentprice">
-
-                {{ chicken.improvmentprice }}
+                :disabled="money < chicken.improvmentprice">{{ chicken.improvmentprice }}
               </b-button>
             </b-col>
           </b-row>
-                 </b-layout>
-      </b-card>
-      <b-card v-if="apprentice.allow" style="max-width: 20rem;"><template v-slot:header>Personal<p></p><p><small>Immer nützlich...</small></p></template>
-        <b-layout fluid>
-          <b-row>
-            <b-col>
-              <div title="hilft in der Backstube">{{ apprentice.count }} {{ apprentice.count === 1 ? "Lehrling" : "Lehrlinge"}}</div>
-            </b-col>
-            <b-col cols="4">
-              <b-button @click="hireApprentice" variant="primary" :disabled="money < apprentice.price">{{ apprentice.price }}
-              </b-button>
-            </b-col>
-          </b-row>
-          <b-row>
-            <b-col>
-              <div title="sorgt dafür, dass die Hühner mehr Eier legen... fragt sich nur wie">{{ animalKeep.count }} Tierflüsterer</div>
-            </b-col>
-            <b-col cols="4">
-              <b-button @click="hireAnimalKeep" variant="primary" class="mt-2" :disabled="money < animalKeep.price">{{ animalKeep.price }}
-              </b-button>
-            </b-col>
-          </b-row>
-          <b-row>
-            <b-col>
-              <div title="entdeckt bessere Rezepte">{{ alchemist.count }} {{ alchemist.count === 1 ? "Alchemist" : "Alchemisten"}}</div>
-            </b-col>
-            <b-col cols="4">
-              <b-button @click="hireAlchemist" variant="primary" class="mt-2" :disabled="money < alchemist.price || alchemist.count > 0">{{ alchemist.price }}
-              </b-button>
-            </b-col>
-          </b-row>
-                 </b-layout>
+        </b-layout>
       </b-card>
       <b-card v-if="apprentice.allow" style="max-width: 20rem;"><template v-slot:header>Personal<p></p>
           <p><small>Immer nützlich...</small></p>
@@ -305,17 +265,68 @@
               </b-button>
             </b-col>
           </b-row>
-          <b-row>
+          <b-row v-if="alchemist.enabled">
             <b-col>
-              <div title="entdeckt bessere Rezepte">{{ alchemist.count }}
-                {{ alchemist.count === 1 ? "Alchemist" : "Alchemisten"}}</div>
+              <div title="entdeckt bessere Rezepte">{{ alchemist.count }} {{ "Alchemist"}}</div>
             </b-col>
             <b-col cols="4">
-              <b-button id="alchButton" @click="hireAlchemist" variant="primary" class="mt-2"
-                :disabled="money < alchemist.price || alchemist.count > 0">{{ alchemist.price }}
+              <b-button @click="hireAlchemist" variant="primary" class="mt-2" :disabled="!alchemist.allow">
+                {{ alchemist.buttonText }}
               </b-button>
             </b-col>
           </b-row>
+        </b-layout>
+      </b-card>
+      <b-card v-if="chicken.allow" style="max-width: 20rem;"><template v-slot:header>Verbesserungen<p></p>
+        <p><small></small></p>
+      </template>
+      <b-layout fluid>
+        <b-row v-if="!abhorIng.bought">
+          <b-col>
+            <div>automatisch richtige Zutaten einkaufen</div>
+          </b-col>
+          <b-col cols="4">
+            <b-button @click="abhorIngredients" variant="primary" :disabled="money < abhorIng.price">{{ abhorIng.price }}
+            </b-button>
+          </b-col>
+        </b-row>
+      </b-layout>
+    </b-card>
+
+    </b-card-group>
+    <b-card-group>
+      <b-card header="testing">
+        <b-layout fluid>
+          <b-row>
+            <b-col>
+              Eier
+            </b-col>
+            <b-col>
+              <b-button @click="score+=50000n">+50000 Eier</b-button>
+            </b-col>
+          </b-row>
+          <b-row>
+            <b-col>
+              Gold
+            </b-col>
+            <b-col>
+              <b-button @click="money+=50000n" class="mt-2">+50000g</b-button>
+            </b-col>
+          </b-row>
+          <b-row>
+            <b-col>
+              <b-button @click="doIt('eggnog')">eggnog</b-button>
+              <b-button @click="doIt('demon')">demon</b-button>
+              <b-button @click="doIt('explosion')">explosion</b-button>
+              <b-button @click="doIt('boiledEggs')">boiledEggs</b-button>
+              <b-button @click="doIt('scrambled')">scrambled</b-button>
+              <b-button @click="doIt('eggsalad')">eggsalad</b-button>
+              <b-button @click="doIt('apfelstrudel')">apfelstrudel</b-button>
+              <b-button @click="doIt('omelette')">omelette</b-button>
+              <b-button @click="doIt('bread')">bread</b-button>
+            </b-col>
+          </b-row>
+
         </b-layout>
       </b-card>
     </b-card-group>
@@ -348,35 +359,35 @@
           }
         },
         flour: {
-          count: 0,
-          price: 5,
+          count: 0n,
+          price: 5n,
           allow: false,
         },
         sugar: {
-          count: 0,
-          price: 5,
+          count: 0n,
+          price: 5n,
         },
         butter: {
-          count: 0,
-          price: 10,
+          count: 0n,
+          price: 10n,
         },
 
         milk: {
-          count: 0,
-          price: 10,
+          count: 0n,
+          price: 10n,
           allow: false,
         },
         apples: {
-          count: 0,
-          price: 2,
+          count: 0n,
+          price: 2n,
           allow: false,
         },
         sables: {
-          count: 0,
-          butter: 2,
-          sugar: 1,
-          flour: 3,
-          value: 20,
+          count: 0n,
+          butter: 2n,
+          sugar: 1n,
+          flour: 3n,
+          value: 20n,
 
         },
         apprentice: {
@@ -400,51 +411,53 @@
           count: 0,
           price: 500,
           allow: true,
+          buttonText: "500",
+          enabled: false,
           recipes: [
             "bread", "omelette", "apfelstrudel", "eggsalad", "scrambled", "boiledEggs", "demon", "explosion", "eggnog"
           ]
         },
         recipes: {
           bread: {
-            flour: 1,
-            value: 2,
+            flour: 1n,
+            value: 2n,
             allow: false,
 
           },
           omelette: {
-            price: 8,
-            milk: 1,
-            butter: 1,
-            value: 20,
+            price: 8n,
+            milk: 1n,
+            butter: 1n,
+            value: 20n,
             allow: false,
 
           },
           apfelstrudel: {
-            flour: 2,
-            apples: 2,
-            butter: 1,
-            value: 30,
+            flour: 2n,
+            apples: 2n,
+            butter: 1n,
+            value: 30n,
             allow: false,
 
           },
           eggsalad: {
-            price: 10,
-            butter: 1,
-            value: 5,
+            price: 10n,
+            butter: 1n,
+            value: 5n,
             allow: false,
 
           },
           scrambled: {
-            price: 8,
-            milk: 1,
-            butter: 1,
-            value: 10,
+            price: 8n,
+            milk: 1n,
+            butter: 1n,
+            value: 10n,
             allow: false,
 
           },
           boiledEggs: {
-            price: 5,
-            value: 1,
+            price: 5n,
+            value: 1n,
             allow: false,
           },
           demon: {
@@ -454,10 +467,14 @@
           },
           eggnog: {
             allow: false,
-            price: 1,
-            value: 5,
+            price: 1n,
+            value: 5n,
           }
 
+        },
+        abhorIng: {
+          price: 1000n,
+          bought: false,
         }
       },
       created: function () {
@@ -470,39 +487,41 @@
         doIt: function (what) {
           switch (what) {
             case "eggnog":
-              window.confirm("Dein Alchemist ist bei einem Versuch auf Eierlikör gestossen. Ein sehr lukratives Geschäft, aber wenn du von der Polizei erwischt wirst, könnte es schwerwiegende Konsequenzen geben. Möchtest du das Getränk trotzdem produzieren?")
+              var check = window.confirm("Dein Alchemist ist bei einem Versuch auf Eierlikör gestossen. Ein sehr lukratives Geschäft, aber wenn du von der Polizei erwischt wirst, könnte es schwerwiegende Konsequenzen geben. Möchtest du das Getränk trotzdem produzieren?")
+              if (check == true) {
+                this.recipes.eggnog.allow = true
+              }
               break
             case "demon":
               alert("Dein Alchemist hat unglücklicherweise einen menschenfressenden Dämon beschworen. Vielleicht war er nicht ganz der Richtige für den Job.")
               this.alchemist.count--
-              elem = document.getElementById("alchButton")
-              elem.value = "500"
+              this.alchemist.buttonText = "500"
               this.alchemist.allow = true
               break
             case "explosion":
               alert("Dein Alchemist hat sich bei einer Explosion selbst verletzt und wird für kurze Zeit ausser Gefecht gesetzt sein.")
-              money -= BigInt(50)
+              this.money -= BigInt(50)
               break
             case "boiledEggs":
-              this.boiledEggs.allow = true
+              this.recipes.boiledEggs.allow = true
               break
             case "scrambled":
-              this.scrambled.allow = true
+              this.recipes.scrambled.allow = true
               this.milk.allow = true
               break
             case "eggsalad":
-              this.eggsalad.allow = true
+              this.recipes.eggsalad.allow = true
               break
             case "apfelstrudel":
-              this.apfelstrudel.allow = true
+              this.recipes.apfelstrudel.allow = true
               this.apples.allow = true
               break
             case "omelette":
-              this.omelette.allow = true
+              this.recipes.omelette.allow = true
               this.milk.allow = true
               break
             case "bread":
-              this.bread.allow = true
+              this.recipes.bread.allow = true
               break
           }
         },
@@ -517,22 +536,22 @@
             this.money += BigInt(this.apprentice.production.strength)
             this.apprentice.production.stepsDone = 0
           }
-         
-               if (!this.chicken.allow && this.money >= BigInt(50)){
-                this.chicken.allow = true
-                
+
+          if (!this.chicken.allow && this.money >= BigInt(50)) {
+            this.chicken.allow = true
           }
-         
-               if (!this.apprentice.allow && this.money>= BigInt(300)){
-              this.apprentice.allow = true
-               
+
+          if (!this.apprentice.allow && this.money >= BigInt(300)) {
+            this.apprentice.allow = true
           }
+          if (!this.alchemist.enabled && this.money >= BigInt(500)) {
+            this.alchemist.enabled = true
+          }
+
         },
         addManual: function () {
           this.score += BigInt(this.buttonValue)
-
           if (this.score >= BigInt(5)) {
-
             this.flour.allow = true
           }
         },
@@ -554,7 +573,6 @@
           }
         },
         buyFlour: function () {
-
           this.score -= BigInt(this.flour.price)
           this.flour.count++
         },
@@ -579,67 +597,41 @@
           this.butter.count -= BigInt(this.sables.butter)
           this.sugar.count -= BigInt(this.sables.sugar)
           this.flour.count -= BigInt(this.sables.flour)
-          this.apples.count -= BigInt(this.sables.apples)
-          this.milk.count -= BigInt(this.sables.milk)
-          this.score -= BigInt(this.sables.price)
         },
         makeApfelstrudel: function () {
-          this.money += BigInt(this.apfelstrudel.value)
-          this.butter.count -= BigInt(this.apfelstrudel.butter)
-          this.sugar.count -= BigInt(this.apfelstrudel.sugar)
-          this.flour.count -= BigInt(this.apfelstrudel.flour)
-          this.apples.count -= BigInt(this.apfelstrudel.apples)
-          this.milk.count -= BigInt(this.apfelstrudel.milk)
-          this.score -= BigInt(this.apfelstrudel.price)
+          this.money += BigInt(this.recipes.apfelstrudel.value)
+          this.butter.count -= BigInt(this.recipes.apfelstrudel.butter)
+          this.flour.count -= BigInt(this.recipes.apfelstrudel.flour)
+          this.apples.count -= BigInt(this.recipes.apfelstrudel.apples)
         },
         makeBoiledEggs: function () {
-          this.money += BigInt(this.boiledEggs.value)
-          this.butter.count -= BigInt(this.boiledEggs.butter)
-          this.sugar.count -= BigInt(this.boiledEggs.sugar)
-          this.flour.count -= BigInt(this.boiledEggs.flour)
-          this.apples.count -= BigInt(this.boiledEggs.apples)
-          this.milk.count -= BigInt(this.boiledEggs.milk)
-          this.score -= BigInt(this.boiledEggs.price)
+          this.money += BigInt(this.recipes.boiledEggs.value)
+          this.score -= BigInt(this.recipes.boiledEggs.price)
         },
         makeBread: function () {
-          this.money += BigInt(this.bread.value)
-          this.butter.count -= BigInt(this.bread.butter)
-          this.sugar.count -= BigInt(this.bread.sugar)
-          this.flour.count -= BigInt(this.bread.flour)
-          this.apples.count -= BigInt(this.bread.apples)
-          this.milk.count -= BigInt(this.bread.milk)
-          this.score -= BigInt(this.bread.price)
+          this.money += BigInt(this.recipes.bread.value)
+          this.flour.count -= BigInt(this.recipes.bread.flour)
         },
         makeEggsalad: function () {
-          this.money += BigInt(this.eggsalad.value)
-          this.butter.count -= BigInt(this.eggsalad.butter)
-          this.sugar.count -= BigInt(this.eggsalad.sugar)
-          this.flour.count -= BigInt(this.eggsalad.flour)
-          this.apples.count -= BigInt(this.eggsalad.apples)
-          this.milk.count -= BigInt(this.eggsalad.milk)
-          this.score -= BigInt(this.eggsalad.price)
+          this.money += BigInt(this.recipes.eggsalad.value)
+          this.butter.count -= BigInt(this.recipes.eggsalad.butter)
+          this.score -= BigInt(this.recipes.eggsalad.price)
         },
         makeOmelettes: function () {
-          this.money += BigInt(this.omelette.value)
-          this.butter.count -= BigInt(this.omelette.butter)
-          this.sugar.count -= BigInt(this.omelette.sugar)
-          this.flour.count -= BigInt(this.omelette.flour)
-          this.apples.count -= BigInt(this.omelette.apples)
-          this.milk.count -= BigInt(this.omelette.milk)
-          this.score -= BigInt(this.omelette.price)
+          this.money += BigInt(this.recipes.omelette.value)
+          this.butter.count -= BigInt(this.recipes.omelette.butter)
+          this.milk.count -= BigInt(this.recipes.omelette.milk)
+          this.score -= BigInt(this.recipes.omelette.price)
         },
         makeScrambled: function () {
-          this.money += BigInt(this.scrambled.value)
-          this.butter.count -= BigInt(this.scrambled.butter)
-          this.sugar.count -= BigInt(this.scrambled.sugar)
-          this.flour.count -= BigInt(this.scrambled.flour)
-          this.apples.count -= BigInt(this.scrambled.apples)
-          this.milk.count -= BigInt(this.scrambled.milk)
-          this.score -= BigInt(this.scrambled.price)
+          this.money += BigInt(this.recipes.scrambled.value)
+          this.butter.count -= BigInt(this.recipes.scrambled.butter)
+          this.milk.count -= BigInt(this.recipes.scrambled.milk)
+          this.score -= BigInt(this.recipes.scrambled.price)
         },
         makeEggnog: function () {
-          this.money += BigInt(this.eggnog.value)
-          this.score -= BigInt(this.eggnog.price)
+          this.money += BigInt(this.recipes.eggnog.value)
+          this.score -= BigInt(this.recipes.eggnog.price)
 
         },
         hireApprentice: function () {
@@ -658,22 +650,27 @@
 
         },
         hireAlchemist: function () {
-          var elem = document.getElementById("alchButton");
-          if (elem.value == "500") {
+          console.log("hallo")
+
+          if (this.alchemist.buttonText === "500") {
             this.money -= BigInt(500)
             this.alchemist.count++
-            elem.value = "Experimentieren"
+            this.alchemist.buttonText = "Experimentieren"
           }
-          if (elem.value == "Experimentieren") {
+          else if (this.alchemist.buttonText === "Experimentieren") {
             this.alchemist.allow = false
             setTimeout(() => { this.alchemist.allow = true }, 600000)
-            discoverRex()
+            this.discoverRex()
           }
         },
         discoverRex: function () {
           const pick = this.alchemist.recipes[Math.floor(Math.random() * this.alchemist.recipes.length)]
           this.doIt(pick)
         },
+        abhorIngredients: function(){
+          this.money -= BigInt(this.abhorIng.price)
+          this.abhorIng.bought = true
+        }
 
       }
 
