@@ -260,10 +260,9 @@
               <b-button @click="hireAlchemist" variant="primary" class="mt-2" :disabled="!alchemist.allow">
                 {{ alchemist.buttonText }}
                 <div v-if="alchemist.count > 0">
-                  <b-progress :value="alchProgress" :max="100" show-progress animated></b-progress>
+                  <b-progress :value="alchProgress" :max="100" show-progress></b-progress>
                 </div>
-              </b-button>
-             
+              </b-button>             
             </b-col>
           </b-row>
         </b-layout>
@@ -284,7 +283,6 @@
           </b-row>
         </b-layout>
       </b-card>
-
     </b-card-group>
     <b-card-group>
       <b-card header="testing">
@@ -318,10 +316,14 @@
               <b-button @click="doIt('bread')">bread</b-button>
             </b-col>
           </b-row>
-
         </b-layout>
       </b-card>
     </b-card-group>
+  <!--  <div>
+      <b-modal id="modalEggnog" title="Eggnog" ok-title="Sicher!" cancel-title="Nein, danke!" no-close-on-esc no-close-on-backdrop hide-header-close>
+        <p class="my-4">Dein Alchemist ist bei einem Versuch auf Eierlikör gestossen. <br>Ein sehr lukratives Geschäft, aber wenn du von der Polizei erwischt wirst, könnte es schwerwiegende Konsequenzen geben. <br>Möchtest du das Getränk trotzdem produzieren?</p>
+      </b-modal>
+    </div> !-->
     <!-- DEBUG
       <pre>
         {{ $data }}
@@ -504,7 +506,7 @@
       methods: {
         doIt: function (what) {
           switch (what) {
-            case "eggnog":
+            case "eggnog":              
               var check = window.confirm("Dein Alchemist ist bei einem Versuch auf Eierlikör gestossen. Ein sehr lukratives Geschäft, aber wenn du von der Polizei erwischt wirst, könnte es schwerwiegende Konsequenzen geben. Möchtest du das Getränk trotzdem produzieren?")
               if (check == true) {
                 this.recipes.eggnog.allow = true
@@ -691,6 +693,9 @@
 
         },
         hireAlchemist: function () {
+         if (this.alchemist.allow){
+           this.alchProgress = 100
+         }
          if (this.alchemist.buttonText === "500") {
             this.money -= BigInt(500)
             this.alchemist.count++
@@ -701,14 +706,15 @@
             this.alchemist.allow = false
             this.discoverRex()
             this.alchProgress = 0
-            var interval = setInterval (progressTimer,6000)
+            var interval = setInterval (progressTimer,6)
             function progressTimer (){
               if (this.alchProgress == 100){
                 clearInterval(interval)
                 this.alchemist.allow = true
               }
               else {
-                this.alchProgress ++
+                console.log("hello")
+                this.alchProgress++
               }
             }           
           }
